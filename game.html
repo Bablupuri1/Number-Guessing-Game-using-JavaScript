@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        .wrapper {
+            font-size: 25px;
+            font-weight: 600;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid bg-danger">
+
+        <div class="row bg-info  mt-4">
+
+            <div class="col-md-8 mx-auto mt-3">
+
+
+                <div class="wrapper">
+                    <h1>Number Guessing game</h1>
+                    <p>try and guess a random number between 1 to 100.</p>
+                    <p>you have attempts to guess the right number</p>
+                    <br>
+
+
+
+                    <form class="form">
+                        <label for="guessfield" id="guess">Guess a Number</label>
+                        <input type="text" id="guessfield" class="guessfield form-control-lg">
+                        <input type="submit" id="sub" value="Submit Guess" class="gessSubmit">
+                    </form>
+                    <br>
+                    <div class="resultparas">
+                        <p>Previous Guesses:<span class="guesses"></span></p>
+                        <p>Guesses Remaining: <span class="lastResult">10</span> </p>
+                        <p class="lower"></p>
+                        <button id="startgame" class="btn btn-primary btn-lg">start Game</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //how to genrate random number 1 to 100
+
+        // console.log(parseInt(Math.random()*100+1));
+
+
+        const randomnumber = parseInt(Math.random() * 100 + 1);
+        console.log(randomnumber);
+
+
+        //selector select html class and tag or tagname
+        const submit = document.querySelector('#sub');
+        const userinput = document.querySelector('#guessfield');
+        const guessslot = document.querySelector('.guesses');
+        const Remaining = document.querySelector('.lastResult');
+        const lower = document.querySelector('.lower');
+        const startover = document.querySelector('.resultparas');
+
+
+
+        const p = document.createElement('p');
+
+        let prevguess = [];
+        let numguesses = 1;
+        let playgame = true;
+
+
+        /////////////////////start game and pass userinput to another method 
+
+        if (playgame) {
+            submit.addEventListener('click', function (e) {
+                e.preventDefault();
+                const guess = parseInt(userinput.value);
+                console.log(guess);
+                validateguess(guess);
+            })
+        }
+
+        //////////////////////////////////////////////////////////
+
+
+
+
+        ////////////////validate your guess number is actually number or string ////////////////////
+
+        function validateguess(guess) {
+            //
+            if (isNaN(guess)) {
+                alert("please enter the valide number")
+            }
+            else if (guess < 1) {
+                alert("please enter the number is grater than zero")
+            }
+            else if (guess > 100) {
+                alert("please enter the number leass than 100");
+            }
+
+            else {
+                prevguess.push(guess);
+                if (numguesses === 10) {
+                    displayguess(guess);
+                    displaymessege(`Game Over. Random number was ${randomnumber}`);
+                    lower.style.backgroundColor = "red";
+                    lower.style.padding = "10px";
+
+
+                }
+                else {
+                    displayguess(guess);
+                    checkguess(guess);
+                }
+
+            }
+
+
+
+
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////       
+
+
+        ////////////////////display guesses number and add prev guess and reameaning the number of guess/////////////////////////////////////////////////////
+
+        function displayguess(guess) {
+            userinput.value = '';
+            if (numguesses <= 10) {
+                guessslot.innerHTML += `${guess},`;
+                numguesses++;
+                Remaining.innerHTML = `${11 - numguesses}`;
+
+            }
+            else {
+
+                alert("Your attempt is over please try again");
+
+            }
+
+
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+
+
+
+        ////////////////////////this method is used for check the guess number is right or not or lower or grater////
+
+        function checkguess(guess) {
+            if (guess == randomnumber) {
+                console.log(randomnumber);
+                console.log(guess);
+                displaymessege('Your Guessed it right');
+                lower.style.backgroundColor = "pink";
+                lower.style.padding = "15px";
+            }
+
+            else if (guess < randomnumber) {
+                displaymessege('please enter the greater number');
+
+            }
+
+            else if (guess > randomnumber) {
+                displaymessege('please enter the lowest value');
+
+            }
+
+
+
+        }
+        ///////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+        function displaymessege(message) {
+            //intract with dom manipulation
+            lower.innerHTML = `<h2>${message}</h2>`;
+        }
+
+
+        function endgame(numguesses) {
+            alert(`${numguesses}`);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
